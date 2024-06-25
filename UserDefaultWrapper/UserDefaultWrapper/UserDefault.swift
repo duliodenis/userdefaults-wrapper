@@ -14,11 +14,10 @@ struct UserDefault<T> {
     
     var wrappedValue: T {
         get {
-            // TODO
-            return defaultValue
+            return UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
         }
         set {
-            // TODO
+            UserDefaults.standard.set(newValue, forKey: key)
         }
     }
 }
