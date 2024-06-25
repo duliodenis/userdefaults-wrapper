@@ -49,3 +49,18 @@ extension UserDefault where T: ExpressibleByDictionaryLiteral {
         }
     }
 }
+
+// adding support for custom types that conform to Codable
+extension UserDefault where T: Codable {
+    var wrappedValue: T {
+        get {
+            guard let data = UserDefaults.standard.data(forKey: key) else { return defaultValue }
+            let value = try? JSONDecoder().decode(T.self, from: data)
+            return value ?? defaultValue
+        }
+        set {
+            let data = try? JSONEncoder().encode(newValue)
+            UserDefaults.standard.set(data, forKey: key)
+        }
+    }
+}
