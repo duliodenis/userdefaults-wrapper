@@ -26,6 +26,10 @@ struct UserDefault<T> {
         }
     }
     
+    var projectedValue: Self {
+        return self
+    }
+    
     var hasValue: Bool {
         return UserDefaults.standard.object(forKey: key) != nil
     }
