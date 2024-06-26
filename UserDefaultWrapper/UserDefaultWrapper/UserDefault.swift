@@ -25,6 +25,14 @@ struct UserDefault<T> {
             UserDefaults.standard.set(newValue, forKey: key)
         }
     }
+    
+    var hasValue: Bool {
+        return UserDefaults.standard.object(forKey: key) != nil
+    }
+    
+    func reset() {
+        UserDefaults.standard.removeObject(forKey: key)
+    }
 }
 
 // extensions to the property wrapper to support arrays and dictionaries
