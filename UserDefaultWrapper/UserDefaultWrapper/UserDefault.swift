@@ -19,23 +19,25 @@ struct UserDefault<T> {
     
     var wrappedValue: T {
         get {
-            return UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
+            UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: key)
+            Task {
+                await UserDefaults.standard.set(newValue, forKey: key)
+            }
         }
     }
     
     var projectedValue: Self {
-        return self
+        self
     }
     
     var hasValue: Bool {
-        return UserDefaults.standard.object(forKey: key) != nil
+        UserDefaults.standard.object(forKey: key) != nil
     }
     
-    func reset() {
-        UserDefaults.standard.removeObject(forKey: key)
+    func reset() async {
+        await UserDefaults.standard.removeObject(forKey: key)
     }
 }
 
@@ -43,10 +45,12 @@ struct UserDefault<T> {
 extension UserDefault where T: ExpressibleByArrayLiteral {
     var wrappedValue: T {
         get {
-            return UserDefaults.standard.array(forKey: key) as? T ?? defaultValue
+            UserDefaults.standard.array(forKey: key) as? T ?? defaultValue
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: key)
+            Task {
+                await UserDefaults.standard.set(newValue, forKey: key)
+            }
         }
     }
 }
