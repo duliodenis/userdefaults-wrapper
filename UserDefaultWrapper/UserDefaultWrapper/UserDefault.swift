@@ -19,7 +19,7 @@ struct UserDefault<T> {
     
     var wrappedValue: T {
         get {
-            return UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
+            UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
         }
         set {
             UserDefaults.standard.set(newValue, forKey: key)
@@ -27,11 +27,11 @@ struct UserDefault<T> {
     }
     
     var projectedValue: Self {
-        return self
+        self
     }
     
     var hasValue: Bool {
-        return UserDefaults.standard.object(forKey: key) != nil
+        UserDefaults.standard.object(forKey: key) != nil
     }
     
     func reset() {
@@ -43,7 +43,7 @@ struct UserDefault<T> {
 extension UserDefault where T: ExpressibleByArrayLiteral {
     var wrappedValue: T {
         get {
-            return UserDefaults.standard.array(forKey: key) as? T ?? defaultValue
+            UserDefaults.standard.array(forKey: key) as? T ?? defaultValue
         }
         set {
             UserDefaults.standard.set(newValue, forKey: key)
@@ -54,7 +54,7 @@ extension UserDefault where T: ExpressibleByArrayLiteral {
 extension UserDefault where T: ExpressibleByDictionaryLiteral {
     var wrappedValue: T {
         get {
-            return UserDefaults.standard.dictionary(forKey: key) as? T ?? defaultValue
+            UserDefaults.standard.dictionary(forKey: key) as? T ?? defaultValue
         }
         set {
             UserDefaults.standard.set(newValue, forKey: key)
@@ -67,8 +67,7 @@ extension UserDefault where T: Codable {
     var wrappedValue: T {
         get {
             guard let data = UserDefaults.standard.data(forKey: key) else { return defaultValue }
-            let value = try? JSONDecoder().decode(T.self, from: data)
-            return value ?? defaultValue
+            return (try? JSONDecoder().decode(T.self, from: data)) ?? defaultValue
         }
         set {
             let data = try? JSONEncoder().encode(newValue)
